@@ -1,0 +1,76 @@
+erdiagram 
+
+Model[CUSTOMER]
+CustomerID {PK}
+FirstName
+LastName
+Email
+Address
+Phone
+IsSubscriber (indicates if from magazine subscription list)
+LastPurchaseDate
+
+[PRODUCT]
+ProductID {PK}
+ProductName
+Category (Model/Decal)
+SubCategory (Aircraft/Ships/Cars)
+Scale
+Price
+MinQuantity
+ReorderQuantity
+LastSaleDate
+ManufacturerID {FK}
+
+[MANUFACTURER]
+ManufacturerID {PK}
+ManufacturerName
+WebsiteURL
+Category (Model/Decal manufacturer)
+AccountStatus
+
+[ORDER]
+OrderID {PK}
+CustomerID {FK}
+OrderDate
+ShippingCharge
+TotalAmount
+Status (Completed/Pending/Shipped)
+InvoicePrinted (Boolean)
+
+[ORDER_DETAIL]
+OrderID {FK}
+ProductID {FK}
+Quantity
+UnitPrice
+BackOrdered (Boolean)
+{PK: OrderID + ProductID}
+
+[INVENTORY]
+ProductID {FK}
+QuantityOnHand
+LastRestockDate
+Location
+
+[MANUFACTURER_ORDER]
+ManufOrderID {PK}
+ManufacturerID {FK}
+OrderDate
+TotalAmount
+Status
+
+[MANUFACTURER_ORDER_DETAIL]
+ManufOrderID {FK}
+ProductID {FK}
+Quantity
+UnitPrice
+{PK: ManufOrderID + ProductID}
+
+Relationships:
+- CUSTOMER 1:M ORDER (A customer can have many orders)
+- ORDER 1:M ORDER_DETAIL (An order can have multiple products)
+- PRODUCT 1:M ORDER_DETAIL (A product can appear in many orders)
+- MANUFACTURER 1:M PRODUCT (A manufacturer makes many products)
+- PRODUCT 1:1 INVENTORY (Each product has one inventory record)
+- MANUFACTURER 1:M MANUFACTURER_ORDER (A manufacturer can receive many orders)
+- MANUFACTURER_ORDER 1:M MANUFACTURER_ORDER_DETAIL (A manufacturer order can have multiple products)
